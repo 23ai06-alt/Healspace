@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HealSpace Quiz</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #a8e6cf, #dcedc1);
+      font-family: "Poppins", sans-serif;
+      color: #2e2e2e;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      position: relative;
+      padding: 60px 20px;
+    }
+
+    header.logo {
+      position: absolute;
+      top: 20px;
+      left: 40px;
+      font-size: 28px;
+      font-weight: 900;
+      color: #1c7430;
+      letter-spacing: 1px;
+    }
+
+    .home-link {
+      position: absolute;
+      top: 25px;
+      right: 40px;
+      font-size: 18px;
+      color: #1c7430;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .home-link:hover {
+      color: #145c24;
+      text-decoration: underline;
+    }
+
+    h1 {
+      font-weight: 700;
+      color: #145c24;
+      margin-bottom: 30px;
+    }
+
+    .quiz-card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      max-width: 600px;
+      text-align: center;
+      transition: transform 0.3s;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .quiz-card:hover {
+      transform: scale(1.02);
+    }
+
+    .question {
+      font-size: 20px;
+      margin-bottom: 20px;
+      font-weight: 600;
+      color: #145c24;
+    }
+
+    .options label {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: #f0fff0;
+      cursor: pointer;
+      border: 1px solid #c1e1c1;
+      transition: all 0.3s;
+    }
+
+    .options label:hover {
+      background-color: #baf5b0;
+      color: #064b12;
+    }
+
+    .quiz-controls {
+      display: flex;
+      justify-content: flex-end; /* Next button on right side */
+      margin-top: 20px;
+    }
+
+    .btn-nav {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .btn-nav:hover {
+      background: #3a873f;
+      transform: scale(1.05);
+    }
+
+    .progress-count {
+      margin-top: 15px;
+      font-weight: 600;
+      color: #145c24;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Modal */
+    .modal-content {
+      border-radius: 20px;
+      text-align: center;
+      padding: 25px;
+      background: #f0fff0;
+    }
+
+    .close-btn {
+      background: #4CAF50;
+      border: none;
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 25px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 20px;
+      transition: 0.3s ease;
+    }
+
+    .close-btn:hover {
+      background: #357a38;
+    }
+
+    /* Loader styling */
+    #loaderOverlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      font-weight: 600;
+      color: #145c24;
+      font-size: 20px;
+      display: none;
+    }
+
+    .spinner-border {
+      width: 3rem;
+      height: 3rem;
+      margin-bottom: 15px;
+      color: #4CAF50;
+    }
+  </style>
+</head>
+<body>
+  <header class="logo">HEALSPACE</header>
+  <a href="/dashboard" class="home-link">🏠 Home</a>
+
+  <h1>🌿 Mental Health Quiz</h1>
+
+  <div class="quiz-card" id="quizCard">
+    <div id="questionContainer"></div>
+
+    <div class="quiz-controls">
+      <button class="btn-nav" id="nextBtn">Next</button>
+    </div>
+
+    <p class="progress-count" id="progressCount"></p>
+  </div>
+
+  <!-- Loader -->
+  <div id="loaderOverlay">
+    <div class="spinner-border" role="status"></div>
+    <p>Analyzing Results...</p>
+  </div>
+
+  <!-- Result Modal -->
+  <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <h3 id="resultTitle"></h3>
+        <p id="resultTips"></p>
+        <p id="resultVideo"></p>
+        <button class="close-btn" id="closeBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const rawQuestions = '{{ questions | tojson | safe }}';
+    const questions = JSON.parse(rawQuestions);
+
+    let current = 0;
+    const answers = {};
+
+    const questionContainer = document.getElementById("questionContainer");
+    const progressCount = document.getElementById("progressCount");
+    const nextBtn = document.getElementById("nextBtn");
+    const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+    const loader = document.getElementById("loaderOverlay");
+
+    const resultTitle = document.getElementById("resultTitle");
+    const resultTips = document.getElementById("resultTips");
+    const resultVideo = document.getElementById("resultVideo");
+    const closeBtn = document.getElementById("closeBtn");
+
+    function showQuestion(index) {
+      const q = questions[index];
+      questionContainer.innerHTML = `
+        <div class="question">${q.question}</div>
+        <div class="options">
+          <label><input type="radio" name="answer" value="yes" ${answers[q.id] === 'yes' ? 'checked' : ''}> Yes</label>
+          <label><input type="radio" name="answer" value="no" ${answers[q.id] === 'no' ? 'checked' : ''}> No</label>
+        </div>
+      `;
+      progressCount.innerText = `Question ${index + 1} of ${questions.length}`;
+      nextBtn.innerText = index === questions.length - 1 ? "Submit" : "Next";
+    }
+
+    nextBtn.addEventListener("click", () => {
+  const selected = document.querySelector('input[name="answer"]:checked');
+  if (!selected) {
+  const warningModal = new bootstrap.Modal(document.getElementById('warningModal'));
+  warningModal.show();
+  return;
+}
+
+  answers[questions[current].id] = selected.value;
+
+  if (current < questions.length - 1) {
+    current++;
+    showQuestion(current);
+  } else {
+    loader.style.display = "flex"; // show loader immediately
+
+    fetch("/result", {
+      method: "POST",
+      body: JSON.stringify(answers),
+      headers: { "Content-Type": "application/json" },
+    })
+    .then(res => res.json())
+    .then(data => {
+      // simulate short processing time so loader is visible
+      setTimeout(() => {
+        loader.style.display = "none"; // hide loader
+        resultTitle.innerText = `You might be experiencing: ${data.diagnosis}`;
+        resultTips.innerHTML = `<b>Tips:</b><br>${data.tips}`;
+        resultVideo.innerHTML = `<b>Helpful Video:</b> <a href="${data.video}" target="_blank">${data.video}</a>`;
+        resultModal.show();
+      }, 1500); // 1.5 seconds delay for animation visibility
+    });
+  }
+});
+
+
+    closeBtn.addEventListener("click", () => {
+      window.location.href = "/dashboard";
+    });
+
+    showQuestion(current);
+  </script>
+  <!-- Warning Modal -->
+<div class="modal fade" id="warningModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background:#fff3cd; border-radius:15px; padding:25px; text-align:center;">
+      <h5 style="color:#856404; font-weight:700;">⚠️ Oops!</h5>
+      <p style="color:#856404; font-weight:500;">Please select an answer before moving to the next question.</p>
+      <button class="close-btn" data-bs-dismiss="modal" style="background:#ffc107; border:none; color:#fff; border-radius:10px; padding:8px 20px; font-weight:600;">
+        Okay
+      </button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HealSpace</title>
+</head>
+<body>
+  <!-- Hidden elements for AJAX -->
+  <div id="diagnosis">{{ diagnosis }}</div>
+<div id="tips">{{ data.tips|join('<br>')|safe }}</div>
+<div id="video">{{ data.youtube }}</div>
+</body>
+</html>
