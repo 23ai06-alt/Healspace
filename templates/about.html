@@ -1,1 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | HealSpace</title>
+
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #a8e6cf, #dcedc1);
+      font-family: "Poppins", sans-serif;
+      color: #2e2e2e;
+      margin: 0;
+      height: 100vh; /* full viewport height */
+      overflow: hidden; /* disable scroll */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    header.logo {
+      position: absolute;
+      top: 20px;
+      left: 40px;
+      font-size: 28px;
+      font-weight: 900;
+      color: #1c7430;
+      letter-spacing: 1px;
+    }
+
+    .home-link {
+      position: absolute;
+      top: 25px;
+      right: 40px;
+      font-size: 18px;
+      color: #1c7430;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    .home-link:hover {
+      color: #145c24;
+      text-decoration: underline;
+    }
+
+    .about-card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 30px 40px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      max-width: 800px;
+      width: 90%;
+      text-align: center;
+      animation: fadeIn 0.5s ease-in-out;
+       transform: scale(1.05);
+  transform-origin: center;
+    }
+
+    h1 {
+      font-weight: 800;
+      color: #145c24;
+      margin-bottom: 20px;
+    }
+
+    .about-card p {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      color: #2e2e2e;
+    }
+
+    .highlight {
+      color: #1c7430;
+      font-weight: 600;
+    }
+
+    .team-section {
+      margin-top: 15px;
+    }
+
+    .team-title {
+      font-size: 21px;
+      font-weight: 700;
+      color: #145c24;
+      margin-bottom: 12px;
+    }
+
+    .team-members {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .member {
+      background-color: #f0fff0;
+      border: 1px solid #c1e1c1;
+      border-radius: 15px;
+      padding: 12px 20px;
+      font-weight: 600;
+      color: #145c24;
+      transition: all 0.3s;
+    }
+
+    .member:hover {
+      background-color: #baf5b0;
+      transform: scale(1.05);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 15px;
+      font-size: 14px;
+      color: #145c24;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* For smaller screens */
+    @media (max-height: 700px) {
+      .about-card {
+        padding: 20px 25px;
+      }
+      h1 {
+        font-size: 25px;
+      }
+      .about-card p {
+        font-size: 15px;
+      }
+      .member {
+        padding: 8px 16px;
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="logo">HealSpace</header>
+  <a href="/dashboard" class="home-link">Home</a>
+
+  <h1>About HealSpace</h1>
+
+  <div class="about-card">
+    <p>
+      Welcome to <span class="highlight">HealSpace</span> 🌿 — your safe digital corner for mental wellness.  
+      Our mission is to create a space where anyone can learn about their mental health, 
+      take insightful quizzes, and find gentle guidance toward healing — all without judgment or barriers.
+    </p>
+
+    <p>
+      HealSpace offers a <span class="highlight">Dashboard</span> to explore different mental health conditions,  
+      a self-awareness <span class="highlight">Quiz</span> to help you understand your emotions,  
+      and a comforting <span class="highlight">Chatbot named Healy</span> 🤖 — a virtual companion 
+      designed to listen and provide emotional support whenever you need it.
+    </p>
+
+    <p>
+      We believe mental health should be accessible to everyone — that’s why HealSpace 
+      doesn’t require authentication or sign-up. Your privacy and comfort come first.
+    </p>
+
+    <div class="team-section">
+      <div class="team-title">🌸 Our Team</div>
+      <div class="team-members">
+        <div class="member">Zainab Sagri</div>
+        <div class="member">Samreen Mujawar</div>
+        <div class="member">Rujuta Sarvankar</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 HealSpace | Created with 💚 by our dedicated team
+  </footer>
+</body>
+</html>
 
